@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Registro de Herdeiros · D.O.A.</title>
+<meta name="description" content="Guia de criação de Tributos e Dívidas e ficha de personagem para a campanha.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..800&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+/* Layout: pasta de repartição — cabeçalho de arquivo, abas Guia / Ficha, coluna de leitura de ~760px, ficha como folha de formulário */
+:root{
+  --bg:#E5EAE5;
+  --paper:#F8FAF7;
+  --field:#FFFFFF;
+  --ink:#1B2230;
+  --muted:#5B6470;
+  --line:#C6CEC8;
+  --stamp:#5B3FA8;
+  --tributo:#1E6E68;
+  --divida:#A02C3C;
+  --display:"Archivo","Arial Narrow",system-ui,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0F1318; --paper:#161B22; --field:#10151B; --ink:#E3E7ED; --muted:#98A1AD;
+    --line:#2C343F; --stamp:#A993F0; --tributo:#5FC4B9; --divida:#F08291; color-scheme:dark;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6}
+[hidden]{display:none!important}
+img{max-width:100%}
+.wrap{max-width:780px;margin:0 auto;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-top:calc(28px + env(safe-area-inset-top, 0px));padding-bottom:calc(72px + env(safe-area-inset-bottom, 0px))}
+
+/* Capa */
+.capa{border-bottom:2px solid var(--ink);padding-bottom:20px}
+.capa-topo{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.sigla,.nota,.protocolo,.progresso-texto{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+.sigla{letter-spacing:.08em;text-transform:uppercase}
+.selo{font-family:var(--display);font-stretch:80%;font-weight:800;text-transform:uppercase;letter-spacing:.14em;font-size:13px;color:var(--stamp);border:2px solid var(--stamp);padding:3px 10px;border-radius:3px;transform:rotate(-4deg);display:inline-block}
+h1{font-family:var(--display);font-stretch:72%;font-weight:800;text-transform:uppercase;font-size:clamp(42px, 10vw, 74px);line-height:.92;letter-spacing:.005em;margin:20px 0 14px;text-wrap:balance}
+.lede{font-size:18.5px;max-width:58ch;margin:0 0 10px}
+.nota{margin:0}
+
+/* Abas */
+.abas{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:22px 0 30px;overflow-x:auto}
+.abas button{font-family:var(--display);font-stretch:85%;font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:15px;background:none;border:0;border-bottom:3px solid transparent;color:var(--muted);padding:10px 14px;cursor:pointer;white-space:nowrap;margin-bottom:-1px}
+.abas button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--stamp)}
+.abas button:focus-visible{outline:2px solid var(--stamp);outline-offset:2px}
+
+/* Botões */
+.btn{font-family:var(--display);font-stretch:85%;font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:14px;padding:11px 16px;border:1.5px solid var(--ink);background:transparent;color:var(--ink);border-radius:3px;cursor:pointer}
+.btn:hover{background:color-mix(in srgb, var(--ink) 7%, transparent)}
+.btn.primario{background:var(--stamp);border-color:var(--stamp);color:var(--paper)}
+.btn.primario:hover{background:color-mix(in srgb, var(--stamp) 88%, var(--ink))}
+.btn.discreto{border-color:var(--line);color:var(--muted)}
+.btn:focus-visible{outline:2px solid var(--stamp);outline-offset:2px}
+.acoes-guia{display:flex;justify-content:flex-end;margin:-10px 0 18px}
+
+/* Guia */
+#guia-conteudo{max-width:68ch}
+#guia-conteudo h2{font-family:var(--display);font-stretch:80%;font-weight:750;text-transform:uppercase;letter-spacing:.03em;font-size:25px;line-height:1.1;margin:44px 0 12px;text-wrap:balance}
+#guia-conteudo h2:first-child{margin-top:0}
+#guia-conteudo p{margin:0 0 14px}
+#guia-conteudo ol,#guia-conteudo ul{padding-left:1.5em;margin:0 0 18px;display:grid;gap:8px}
+#guia-conteudo li ul{margin:8px 0 0;gap:4px}
+#guia-conteudo ol > li::marker{font-family:var(--mono);color:var(--stamp);font-size:.85em}
+.tabela-wrap{overflow-x:auto;margin:6px 0 18px;border:1px solid var(--line);border-radius:4px;background:var(--paper)}
+table{border-collapse:collapse;width:100%;min-width:540px;font-size:15.5px;line-height:1.5}
+th,td{text-align:left;vertical-align:top;padding:11px 14px;border-bottom:1px solid var(--line)}
+tbody tr:last-child th,tbody tr:last-child td{border-bottom:0}
+thead th{font-family:var(--mono);font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.1em}
+tbody th{font-family:var(--mono);font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);white-space:nowrap}
+.c-tributo{color:var(--tributo)} .c-divida{color:var(--divida)}
+.exemplos{display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:14px;margin:8px 0 18px}
+.exemplo{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:16px 18px;min-width:0}
+.ex-cab{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:8px}
+.exemplo h3{font-family:var(--display);font-stretch:85%;font-weight:700;font-size:19px;line-height:1.15;margin:0;text-wrap:balance}
+#guia-conteudo .exemplo p{font-size:15.5px;margin:0 0 8px}
+#guia-conteudo .exemplo p.peso{color:var(--muted);margin:0}
+.pill{font-family:var(--mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;padding:2px 9px;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
+.pill.tributo{color:var(--tributo)} .pill.divida{color:var(--divida)}
+.proximo{display:flex;justify-content:flex-start;margin-top:32px;padding-top:24px;border-top:1px solid var(--line)}
+
+/* Ficha */
+.folha{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:24px clamp(16px, 4vw, 34px) 28px}
+.folha-cab{display:flex;justify-content:space-between;gap:16px 24px;flex-wrap:wrap;align-items:flex-end;border-bottom:2px solid var(--ink);padding-bottom:14px}
+.folha-titulo{display:grid;gap:4px}
+.folha-titulo h2{font-family:var(--display);font-stretch:78%;font-weight:800;text-transform:uppercase;font-size:28px;line-height:1;margin:0}
+.progresso{flex:1 1 180px;max-width:260px;min-width:0}
+.progresso-texto{font-variant-numeric:tabular-nums}
+.barra{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin-top:6px}
+.barra i{display:block;height:100%;width:0;background:var(--stamp);transition:width .3s}
+.folha-intro{font-size:15.5px;color:var(--muted);margin:14px 0 0;max-width:62ch}
+fieldset.grupo{border:0;padding:0;margin:26px 0 0;display:grid;gap:18px;min-width:0}
+fieldset.grupo legend{font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--stamp);padding:0;margin-bottom:14px}
+fieldset.secreto{border:1.5px dashed var(--line);border-radius:4px;padding:6px 16px 18px}
+fieldset.secreto legend{padding:0 6px;margin-bottom:6px}
+.grupo-nota{font-size:14.5px;color:var(--muted);margin:0}
+.campo{display:grid;gap:6px;min-width:0}
+.rotulo{font-family:var(--display);font-stretch:90%;font-weight:650;font-size:15.5px;letter-spacing:.01em}
+.dica{font-size:14.5px;color:var(--muted);margin-top:-4px}
+input[type="text"],textarea{width:100%;font-family:var(--body);font-size:16px;line-height:1.5;color:var(--ink);background:var(--field);border:1px solid var(--line);border-radius:3px;padding:10px 12px}
+textarea{resize:vertical;min-height:86px}
+input[type="text"]:focus,textarea:focus{outline:2px solid var(--stamp);outline-offset:-1px;border-color:var(--stamp)}
+::placeholder{color:var(--muted);opacity:.7}
+.opcoes{display:flex;flex-wrap:wrap;gap:8px}
+.opcoes input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.opcoes label{font-family:var(--mono);font-size:13px;padding:8px 15px;border:1.5px solid var(--line);border-radius:999px;cursor:pointer;background:var(--field);color:var(--ink)}
+.opcoes label:hover{border-color:var(--muted)}
+.opcoes input:checked + label{border-color:var(--stamp);background:var(--stamp);color:var(--paper)}
+.opcoes input:checked + label[data-valor="Tributo"]{border-color:var(--tributo);background:var(--tributo)}
+.opcoes input:checked + label[data-valor="Dívida"]{border-color:var(--divida);background:var(--divida)}
+.opcoes input:focus-visible + label{outline:2px solid var(--stamp);outline-offset:2px}
+.barra-acoes{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:28px;padding-top:20px;border-top:1px solid var(--line)}
+.barra-acoes .espaco{flex:1 1 auto}
+.entrega{font-size:15px;color:var(--muted);margin:12px 0 0;max-width:62ch}
+textarea.copia{margin-top:12px;font-family:var(--mono);font-size:13px}
+
+/* Aviso flutuante */
+#aviso{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom, 0px));width:max-content;max-width:min(560px, calc(100% - 32px));background:var(--ink);color:var(--bg);font-size:15px;line-height:1.4;padding:12px 16px;border-radius:4px;box-shadow:0 8px 28px rgba(0,0,0,.2);z-index:20}
+
+@media (max-width:520px){
+  body{font-size:16.5px}
+  .barra-acoes .espaco{display:none}
+  .barra-acoes .btn{flex:1 1 auto}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="capa">
+    <div class="capa-topo">
+      <span class="sigla">D.O.A. · Divisão de Ocorrências Atípicas</span>
+      <span class="selo" aria-hidden="true">Confidencial</span>
+    </div>
+    <h1>Registro de Herdeiros</h1>
+    <p class="lede">Leia o guia, crie o Tributo ou a Dívida do seu personagem e preencha a ficha. No final, mande para o mestre pelo WhatsApp ou baixe em PDF.</p>
+    <p class="nota">Material de jogo · campanha de RPG</p>
+  </header>
+
+  <nav class="abas" role="tablist" aria-label="Seções">
+    <button type="button" role="tab" id="aba-guia" aria-controls="painel-guia" aria-selected="true">Guia</button>
+    <button type="button" role="tab" id="aba-ficha" aria-controls="painel-ficha" aria-selected="false" tabindex="-1">Ficha</button>
+  </nav>
+
+  <main>
+    <section id="painel-guia" role="tabpanel" aria-labelledby="aba-guia">
+      <div class="acoes-guia"><button type="button" class="btn" id="btn-guia-pdf">Baixar guia em PDF</button></div>
+
+      <article id="guia-conteudo">
+        <h2>O que são Tributos e Dívidas</h2>
+        <p>Quando alguém com quem você tinha um laço forte morre, o que essa pessoa sentia no fim pode passar para você e virar um poder. Se era um desejo bom, vira um <strong>Tributo</strong>. Se era ódio, culpa ou maldição, vira uma <strong>Dívida</strong>.</p>
+        <p>Ninguém sabe por que isso começou. Até poucos anos atrás, não havia registro de nada parecido. Hoje os casos ainda são raros, mas estão aumentando, junto com outros fenômenos paranormais pelo mundo.</p>
+        <p>A maior parte da população não sabe que nada disso existe. A <strong>D.O.A.</strong>, uma divisão secreta da Polícia Federal, trabalha para encobrir tudo.</p>
+        <p>Todo personagem começa a campanha com um Tributo ou uma Dívida. Este guia cuida da história do seu poder; as regras mecânicas (dados, custos, níveis) vêm depois.</p>
+
+        <h2>Tributo ou Dívida</h2>
+        <p>A diferença está no que a pessoa sentia ao morrer: um Tributo você controla, mas ele pesa; uma Dívida age sozinha e sempre cobra.</p>
+        <div class="tabela-wrap">
+          <table>
+            <thead><tr><th scope="col"></th><th scope="col" class="c-tributo">Tributo</th><th scope="col" class="c-divida">Dívida</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Nasce de</th><td>Um desejo bom de quem morreu, para você ou para o mundo</td><td>Ódio, culpa, rancor ou maldição de quem morreu</td></tr>
+              <tr><th scope="row">Controle</th><td>Você decide quando usar</td><td>Você não controla; ela age quando quer ou quando é provocada</td></tr>
+              <tr><th scope="row">O peso</th><td>O desejo puxa você para cumpri-lo, e ignorá-lo dói</td><td>Cobra algo a cada uso: memória, saúde, sanidade, relações, pedaços de você</td></tr>
+              <tr><th scope="row">A sensação</th><td>Saudade, propósito, alguém do seu lado</td><td>Culpa, cobrança, alguém que não te perdoou</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Uma Dívida não é "o poder do vilão". Ela é mais perigosa e mais trágica, e dá ótimas histórias para quem topar carregá-la.</p>
+
+        <h2>Regras do mundo</h2>
+        <p>Sete regras valem para todo herdeiro, sem exceção.</p>
+        <ol>
+          <li><strong>Ninguém escolhe receber.</strong> O poder chega; não dá para recusar.</li>
+          <li><strong>Dá para tentar não usar um Tributo.</strong> Mas o desejo continua lá, e ignorá-lo tem preço.</li>
+          <li><strong>Uma Dívida não obedece.</strong> Ela pode ser contida, nunca controlada.</li>
+          <li><strong>O poder nasce de duas coisas:</strong> o desejo de quem morreu e a vida de quem recebeu. O mesmo desejo, em duas pessoas diferentes, viraria dois poderes diferentes.</li>
+          <li><strong>É raro.</strong> A maioria das pessoas nunca vai conhecer um herdeiro.</li>
+          <li><strong>Segredo é força.</strong> Quem entende como um poder funciona descobre suas falhas. Herdeiros espertos não contam o que o seu faz.</li>
+          <li><strong>Um por personagem.</strong> Cada personagem começa com um único Tributo ou uma única Dívida.</li>
+        </ol>
+
+        <h2>Passo a passo</h2>
+        <p>Comece sempre por quem morreu, nunca pelo poder. Responda as perguntas na ordem; o poder aparece sozinho no meio do caminho.</p>
+        <ol>
+          <li><strong>Quem morreu?</strong> Nome, idade, quem essa pessoa era.</li>
+          <li><strong>Qual era o laço?</strong> Por que ela importava para você, e você para ela.
+            <ul><li>Nem sempre é amor. Pode ser alguém que você machucou, ou que te machucou.</li></ul>
+          </li>
+          <li><strong>Como foi a morte?</strong> Onde você estava? Estava junto, chegou tarde, só soube dias depois?</li>
+          <li><strong>O que ela desejava no fim?</strong> Escreva em uma frase, na voz dela.
+            <ul>
+              <li>Exemplo de Tributo: "Eu queria que você nunca mais ficasse sozinho."</li>
+              <li>Exemplo de Dívida: "Você vai sentir o que eu senti."</li>
+            </ul>
+          </li>
+          <li><strong>Como esse desejo virou poder na sua vida?</strong> Cruze o desejo com quem você é: profissão, medos, manias, o jeito que você resolve as coisas.</li>
+          <li><strong>Como ele se manifesta?</strong> Uma arma, um objeto, um som, um cheiro, uma presença, uma mudança no seu corpo.</li>
+          <li><strong>O que ele faz?</strong> Duas ou três frases sobre o efeito principal.</li>
+          <li><strong>Quais são os limites e as falhas?</strong> Alcance, duração, gatilho, o que anula, quando falha.</li>
+          <li><strong>Qual é o peso?</strong> A compulsão do Tributo ou o custo da Dívida. E o que acontece se você ignorar.</li>
+          <li><strong>O que você ainda não sabe sobre ele?</strong> Deixe espaço para o mestre surpreender você durante a campanha.</li>
+        </ol>
+
+        <h2>O tom: engraçado por fora, devastador por dentro</h2>
+        <p>Um bom poder nesta campanha arranca uma risada na primeira vez e um silêncio quando a mesa descobre de onde ele veio. Quatro exemplos para dar o tom:</p>
+        <div class="exemplos">
+          <div class="exemplo" data-tipo="Tributo">
+            <div class="ex-cab"><h3>O Pagode Inacabado</h3><span class="pill tributo">Tributo</span></div>
+            <p>Seu Valdir, pagodeiro, morreu sem terminar a última música. O sobrinho dele herdou o desejo: sempre que luta, um pagode começa a tocar do nada, e os golpes seguem o ritmo. A mesa ri até descobrir que a música era para a filha que Valdir nunca conheceu.</p>
+            <p class="peso"><em>Peso:</em> ele não consegue parar no meio de uma música.</p>
+          </div>
+          <div class="exemplo" data-tipo="Tributo">
+            <div class="ex-cab"><h3>Almoço de Domingo</h3><span class="pill tributo">Tributo</span></div>
+            <p>Dona Cida só queria a família reunida mais uma vez. A neta consegue puxar pessoas para perto de si, à força. Toda vez sente cheiro de feijão e uma saudade que não é dela.</p>
+            <p class="peso"><em>Peso:</em> não consegue deixar ninguém ir embora sem se despedir.</p>
+          </div>
+          <div class="exemplo" data-tipo="Dívida">
+            <div class="ex-cab"><h3>A Última Briga</h3><span class="pill divida">Dívida</span></div>
+            <p>A irmã mais velha morreu brigada com ele, culpando-o por tudo. Quando alguém o provoca, as palavras dela saem da boca dele: verdades cruéis que ferem fisicamente quem ouve. Ele vive xingando gente sem querer.</p>
+            <p class="peso"><em>Custo:</em> a cada uso, esquece uma lembrança boa da irmã.</p>
+          </div>
+          <div class="exemplo" data-tipo="Dívida">
+            <div class="ex-cab"><h3>Hora Extra</h3><span class="pill divida">Dívida</span></div>
+            <p>O pai morreu odiando ter trabalhado a vida inteira sem ver o filho crescer. O filho não dorme mais: fica mais forte a cada hora acordado, à base de café e energético. Quando finalmente desmaia, a Dívida assume o corpo dele e sai "trabalhando" sozinha.</p>
+            <p class="peso"><em>Custo:</em> exaustão que nunca passa e noites das quais ele não lembra.</p>
+          </div>
+        </div>
+
+        <h2>Sua ligação com a D.O.A.</h2>
+        <p>Todo personagem foi convocado pela D.O.A. antes da primeira sessão; decida como isso aconteceu.</p>
+        <p>A <strong>Divisão de Ocorrências Atípicas</strong> é uma divisão da Polícia Federal que oficialmente não existe. Ela encobre anomalias e caça herdeiros perigosos, usando outros herdeiros para isso. Verba curta, viatura velha, formulário para tudo.</p>
+        <p>Quatro jeitos comuns de ter entrado:</p>
+        <ul>
+          <li><strong>Incidente:</strong> seu poder causou algo que a D.O.A. precisou encobrir. Entrar foi a alternativa a ser "arquivado".</li>
+          <li><strong>Indicação:</strong> alguém lá dentro conhecia você, ou conhecia quem morreu.</li>
+          <li><strong>Busca:</strong> você procurou respostas sobre o seu poder e acabou encontrando eles.</li>
+          <li><strong>Testemunha:</strong> você viu algo que não devia, e tinha um poder que eles queriam.</li>
+        </ul>
+        <p>Pense também: você confia na D.O.A.? O que você contou a eles sobre o seu poder, e o que escondeu?</p>
+
+        <h2>Dicas e o que evitar</h2>
+        <p>Poder com falha e com história vale mais que poder forte.</p>
+        <ul>
+          <li><strong>Comece pela pessoa, não pelo efeito.</strong> "Quero teletransporte" vem depois de "quem morreu e o que queria".</li>
+          <li><strong>Falha é bom.</strong> Um poder sem limite não gera cena; um poder que falha na hora errada gera.</li>
+          <li><strong>Evite poderes que resolvem tudo:</strong> onipotência, imortalidade sem custo, ler qualquer mente, saber o futuro.</li>
+          <li><strong>Misture humor e dor.</strong> O lado ridículo do poder e o lado trágico de onde ele veio podem morar juntos.</li>
+          <li><strong>Deixe pontas soltas.</strong> Coisas que você não sabe sobre o seu poder ou sobre quem morreu viram ganchos de história.</li>
+          <li><strong>Você não precisa contar tudo aos outros jogadores.</strong> Combine com o mestre o que fica em segredo.</li>
+          <li><strong>Temas pesados.</strong> A campanha lida com luto, perda e saúde mental. Se existe algo que você não quer na mesa, avise o mestre antes de começar.</li>
+        </ul>
+      </article>
+
+      <div class="proximo"><button type="button" class="btn primario" id="btn-ir-ficha">Preencher minha ficha</button></div>
+    </section>
+
+    <section id="painel-ficha" role="tabpanel" aria-labelledby="aba-ficha" hidden>
+      <div class="folha">
+        <div class="folha-cab">
+          <div class="folha-titulo">
+            <span class="protocolo">Formulário de registro · Protocolo <span id="protocolo">RH-0000-0000</span></span>
+            <h2>Ficha de Herdeiro</h2>
+          </div>
+          <div class="progresso" aria-live="polite">
+            <span class="progresso-texto" id="progresso-texto">0 de 16 respondidas</span>
+            <div class="barra" aria-hidden="true"><i id="barra-i"></i></div>
+          </div>
+        </div>
+        <p class="folha-intro">Responda na ordem, começando por quem morreu. O rascunho fica salvo neste aparelho enquanto você escreve.</p>
+
+        <form id="ficha-form" novalidate autocomplete="off"></form>
+
+        <div class="barra-acoes">
+          <button type="button" class="btn primario" id="btn-whats">Enviar no WhatsApp</button>
+          <button type="button" class="btn" id="btn-compartilhar" hidden>Compartilhar PDF</button>
+          <button type="button" class="btn" id="btn-ficha-pdf">Baixar PDF</button>
+          <button type="button" class="btn" id="btn-copiar">Copiar texto</button>
+          <span class="espaco"></span>
+          <button type="button" class="btn discreto" id="btn-limpar">Limpar ficha</button>
+        </div>
+        <p class="entrega" id="entrega"></p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div id="aviso" role="status" aria-live="polite" hidden></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" async></script>
+<script>
+/* =====================================================================
+   CONFIGURAÇÃO DO MESTRE
+   Coloque aqui o seu WhatsApp, só números: 55 + DDD + número.
+   Exemplo: '5541999998888'
+   Se ficar vazio, o botão abre a lista de contatos e o jogador escolhe.
+   ===================================================================== */
+const WHATSAPP_DO_MESTRE = '';
+
+(function(){
+  'use strict';
+  const $ = (s, r) => (r || document).querySelector(s);
+  const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+
+  const FIELDS = [
+    {id:'jogador', g:'Identificação', label:'Seu nome (jogador)', type:'text', ph:'Como o mestre te chama'},
+    {id:'personagem', g:'Identificação', label:'Nome do personagem', type:'text', ph:'Ex.: Rafael Nogueira, o "Rafa"'},
+    {id:'tipo', g:'Identificação', label:'Tipo', type:'choice', options:['Tributo','Dívida']},
+    {id:'poder', g:'Identificação', label:'Nome do poder', type:'text', ph:'Ex.: O Pagode Inacabado'},
+    {id:'morto', g:'Quem morreu', label:'Quem morreu', ph:'Nome, idade e quem essa pessoa era. Ex.: Seu Valdir, 58 anos, pagodeiro de bairro, tio do personagem.'},
+    {id:'laco', g:'Quem morreu', label:'Laço com o personagem', ph:'Por que ela importava para você, e você para ela. Nem sempre é amor.'},
+    {id:'morte', g:'Quem morreu', label:'Como foi a morte', ph:'Onde você estava? Estava junto, chegou tarde, só soube dias depois?'},
+    {id:'desejo', g:'Quem morreu', label:'O último desejo', hint:'Uma frase, na voz de quem morreu.', ph:'Ex.: "Eu só queria terminar essa música pra ela."'},
+    {id:'manifesta', g:'O poder', label:'Como se manifesta', ph:'Uma arma, um objeto, um som, um cheiro, uma presença, uma mudança no corpo.'},
+    {id:'efeito', g:'O poder', label:'O que faz', ph:'Duas ou três frases sobre o efeito principal.'},
+    {id:'limites', g:'O poder', label:'Limites e falhas', ph:'Alcance, duração, gatilho, o que anula, quando falha.'},
+    {id:'peso', g:'O poder', label:'O peso', hint:'A compulsão do Tributo ou o custo da Dívida.', ph:'Ex.: ele não consegue parar no meio de uma música.'},
+    {id:'ignorar', g:'O poder', label:'O que acontece se ignorar', ph:'Ex.: a música toca na cabeça dele sem parar até ele cantar.'},
+    {id:'recrutamento', g:'D.O.A.', label:'Como a D.O.A. te encontrou', type:'choice', options:['Incidente','Indicação','Busca','Testemunha','Outro']},
+    {id:'recrutamento_det', g:'D.O.A.', label:'Conte como foi', ph:'O que aconteceu, quem apareceu, como você entrou.'},
+    {id:'esconde', g:'D.O.A.', label:'O que você esconde da D.O.A.', ph:'O que você não contou sobre o seu poder, ou sobre quem morreu.'},
+    {id:'segredo', g:'Só para o mestre', label:'Algo que nem seu personagem sabe', hint:'Opcional. Uma ponta solta sobre o poder ou sobre quem morreu.', ph:'O mestre vai usar isso para te surpreender.', optional:true}
+  ];
+  const GRUPO_NOTA = {'Só para o mestre':'Só o mestre deve ler esta parte. Mande a ficha no privado dele, não no grupo.'};
+  const RASCUNHO = 'doa-registro-independente-v1';
+  const NUMERO = String(WHATSAPP_DO_MESTRE || '').replace(/\D/g, '');
+  const state = {protocolo:null};
+
+  /* ---------- Formulário ---------- */
+  function montarFormulario(){
+    const form = $('#ficha-form');
+    let fs = null, atual = null;
+    FIELDS.forEach(f => {
+      if (f.g !== atual){
+        atual = f.g;
+        fs = document.createElement('fieldset');
+        fs.className = 'grupo' + (f.g === 'Só para o mestre' ? ' secreto' : '');
+        const lg = document.createElement('legend'); lg.textContent = f.g; fs.appendChild(lg);
+        if (GRUPO_NOTA[f.g]){ const n = document.createElement('p'); n.className = 'grupo-nota'; n.textContent = GRUPO_NOTA[f.g]; fs.appendChild(n); }
+        form.appendChild(fs);
+      }
+      const w = document.createElement('div'); w.className = 'campo';
+      if (f.type === 'choice'){
+        const r = document.createElement('span'); r.className = 'rotulo'; r.id = 'r-' + f.id; r.textContent = f.label; w.appendChild(r);
+        const grp = document.createElement('div'); grp.className = 'opcoes'; grp.setAttribute('role','radiogroup'); grp.setAttribute('aria-labelledby','r-' + f.id);
+        f.options.forEach((o, i) => {
+          const id = 'f-' + f.id + '-' + i;
+          const inp = document.createElement('input'); inp.type = 'radio'; inp.name = f.id; inp.id = id; inp.value = o;
+          const l = document.createElement('label'); l.htmlFor = id; l.textContent = o; l.dataset.valor = o;
+          grp.append(inp, l);
+        });
+        w.appendChild(grp);
+      } else {
+        const l = document.createElement('label'); l.className = 'rotulo'; l.htmlFor = 'f-' + f.id; l.textContent = f.label; w.appendChild(l);
+        if (f.hint){ const h = document.createElement('span'); h.className = 'dica'; h.id = 'd-' + f.id; h.textContent = f.hint; w.appendChild(h); }
+        const el = document.createElement(f.type === 'text' ? 'input' : 'textarea');
+        if (f.type === 'text') el.type = 'text'; else el.rows = 3;
+        el.id = 'f-' + f.id; el.name = f.id; el.placeholder = f.ph || ''; el.autocomplete = 'off';
+        if (f.hint) el.setAttribute('aria-describedby', 'd-' + f.id);
+        w.appendChild(el);
+      }
+      fs.appendChild(w);
+    });
+  }
+  function lerValores(){
+    const v = {};
+    FIELDS.forEach(f => {
+      if (f.type === 'choice'){ const c = $('input[name="' + f.id + '"]:checked'); v[f.id] = c ? c.value : ''; }
+      else { v[f.id] = $('#f-' + f.id).value; }
+    });
+    return v;
+  }
+  function preencher(v){
+    v = v || {};
+    FIELDS.forEach(f => {
+      const val = typeof v[f.id] === 'string' ? v[f.id] : '';
+      if (f.type === 'choice'){ $$('input[name="' + f.id + '"]').forEach(i => { i.checked = (i.value === val); }); }
+      else { $('#f-' + f.id).value = val; }
+    });
+    $$('#ficha-form textarea').forEach(crescer);
+  }
+  function crescer(el){
+    if (!el || el.tagName !== 'TEXTAREA' || !el.offsetParent) return;
+    el.style.height = 'auto'; el.style.height = (el.scrollHeight + 2) + 'px';
+  }
+  function novoProtocolo(){ return 'RH-' + new Date().getFullYear() + '-' + String(Math.floor(1000 + Math.random() * 9000)); }
+  function atualizar(){
+    const v = lerValores();
+    const req = FIELDS.filter(f => !f.optional);
+    const n = req.filter(f => (v[f.id] || '').trim()).length;
+    $('#progresso-texto').textContent = n + ' de ' + req.length + ' respondidas';
+    $('#barra-i').style.width = Math.round(n / req.length * 100) + '%';
+    $('#protocolo').textContent = state.protocolo;
+  }
+  function salvarRascunho(){
+    try { localStorage.setItem(RASCUNHO, JSON.stringify({campos: lerValores(), protocolo: state.protocolo})); } catch (e) {}
+  }
+  function lerRascunho(){
+    try { const s = localStorage.getItem(RASCUNHO); return s ? JSON.parse(s) : null; } catch (e) { return null; }
+  }
+  let rascunhoT = null;
+  function agendarRascunho(){ clearTimeout(rascunhoT); rascunhoT = setTimeout(salvarRascunho, 400); }
+
+  /* ---------- Abas ---------- */
+  const ABAS = ['guia','ficha'];
+  function abrir(nome, rolar){
+    ABAS.forEach(n => {
+      const on = n === nome;
+      $('#painel-' + n).hidden = !on;
+      const b = $('#aba-' + n); b.setAttribute('aria-selected', on ? 'true' : 'false'); b.tabIndex = on ? 0 : -1;
+    });
+    try { history.replaceState(null, '', '#' + nome); } catch (e) {}
+    if (nome === 'ficha') requestAnimationFrame(() => $$('#ficha-form textarea').forEach(crescer));
+    if (rolar) $('.abas').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'start'});
+  }
+  $('.abas').addEventListener('click', e => { const b = e.target.closest('[role="tab"]'); if (b) abrir(b.id.replace('aba-','')); });
+  $('.abas').addEventListener('keydown', e => {
+    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+    const atual = ABAS.findIndex(n => $('#aba-' + n).getAttribute('aria-selected') === 'true');
+    const prox = ABAS[(atual + 1) % ABAS.length];
+    abrir(prox); $('#aba-' + prox).focus(); e.preventDefault();
+  });
+  $('#btn-ir-ficha').addEventListener('click', () => { abrir('ficha', true); });
+
+  /* ---------- Avisos, texto e cópia ---------- */
+  let avisoT = null;
+  function aviso(msg){ const a = $('#aviso'); a.textContent = msg; a.hidden = false; clearTimeout(avisoT); avisoT = setTimeout(() => { a.hidden = true; }, 5000); }
+  function fichaTexto(v, protocolo, zap){
+    const b = s => zap ? '*' + s + '*' : s;
+    const L = [b('FICHA DE HERDEIRO · D.O.A.'), 'Protocolo ' + (protocolo || '-')];
+    let g = null;
+    FIELDS.forEach(f => {
+      if (f.g !== g){ g = f.g; L.push('', b(g.toUpperCase())); }
+      const val = (v[f.id] || '').trim() || '-';
+      L.push(zap ? b(f.label + ':') + ' ' + val : f.label.toUpperCase() + ': ' + val);
+    });
+    return L.join('\n');
+  }
+  function copiar(texto, ancora){
+    const reserva = () => {
+      let ta = ancora._copia;
+      if (!ta){ ta = document.createElement('textarea'); ta.className = 'copia'; ta.readOnly = true; ta.rows = 8; ta.setAttribute('aria-label','Texto da ficha'); ancora.parentElement.after(ta); ancora._copia = ta; }
+      ta.value = texto; ta.hidden = false; ta.focus(); ta.select();
+      let ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+      aviso(ok ? 'Ficha copiada. Cole na conversa com o mestre.' : 'Texto selecionado. Copie e mande para o mestre.');
+    };
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext){
+        navigator.clipboard.writeText(texto).then(() => { if (ancora._copia) ancora._copia.hidden = true; aviso('Ficha copiada. Cole na conversa com o mestre.'); }, reserva);
+      } else reserva();
+    } catch (e) { reserva(); }
+  }
+  function abrirLink(url){
+    const a = document.createElement('a'); a.href = url; a.target = '_blank'; a.rel = 'noopener';
+    document.body.appendChild(a); a.click(); a.remove();
+  }
+
+  /* ---------- PDF ---------- */
+  const INK = [27,34,48], MUTED = [91,100,112], STAMP = [91,63,168];
+  function limparTexto(s){
+    return String(s == null ? '' : s)
+      .replace(/[“”„]/g, '"').replace(/[‘’]/g, "'")
+      .replace(/[–—]/g, '-').replace(/…/g, '...').replace(/•/g, '-')
+      .replace(/[^\x09\x0A\x0D\x20-\x7E\xA0-\xFF]/g, '');
+  }
+  function novoPdf(){
+    const J = window.jspdf && window.jspdf.jsPDF; if (!J) return null;
+    const doc = new J({unit:'mm', format:'a4'});
+    const W = 210, H = 297, M = 18, MW = W - 2 * M; let y = M;
+    return {
+      text(str, o){
+        o = o || {};
+        const size = o.size || 10.5;
+        doc.setFont('helvetica', o.bold ? 'bold' : 'normal'); doc.setFontSize(size); doc.setTextColor.apply(doc, o.color || INK);
+        let s = limparTexto(str); if (o.norm) s = s.replace(/\s+/g, ' ').trim();
+        const ind = o.indent || 0; const lines = doc.splitTextToSize(s, MW - ind); const lh = size * 0.3528 * 1.4;
+        if (o.keep && y + lh * 3 > H - M){ doc.addPage(); y = M; }
+        lines.forEach(l => { if (y + lh > H - M){ doc.addPage(); y = M; } doc.text(l, M + ind, y + lh * 0.75); y += lh; });
+        y += (o.gap == null ? 1.5 : o.gap);
+      },
+      space(n){ y += n; },
+      rule(){ if (y + 4 > H - M){ doc.addPage(); y = M; } doc.setDrawColor(200,206,202); doc.setLineWidth(0.3); doc.line(M, y, W - M, y); y += 3; },
+      finish(titulo){
+        const n = doc.getNumberOfPages();
+        for (let i = 1; i <= n; i++){ doc.setPage(i); doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor.apply(doc, MUTED); doc.text(limparTexto(titulo + ' · pág. ' + i + ' de ' + n), M, H - 9); }
+        return doc.output('blob');
+      }
+    };
+  }
+  function listaPdf(p, el, nivel){
+    const ord = el.matches('ol');
+    Array.from(el.children).forEach((li, i) => {
+      const c = li.cloneNode(true); $$('ul,ol', c).forEach(x => x.remove());
+      p.text((ord ? (i + 1) + '. ' : '- ') + c.textContent, {indent: 4 + nivel * 6, gap: 1.2, norm: true});
+      const sub = li.querySelector(':scope > ul, :scope > ol'); if (sub) listaPdf(p, sub, nivel + 1);
+    });
+  }
+  function guiaPdf(){
+    const p = novoPdf(); if (!p) return null;
+    p.text('Guia de Criação de Tributos e Dívidas', {size:18, bold:true, gap:1});
+    p.text('D.O.A. · Divisão de Ocorrências Atípicas · material de jogo', {size:9, color:MUTED, gap:6});
+    $$('#guia-conteudo > *').forEach(el => {
+      if (el.matches('h2')){ p.space(3); p.text(el.textContent, {size:14, bold:true, gap:2, keep:true, norm:true}); }
+      else if (el.matches('p')){ p.text(el.textContent, {gap:2.5, norm:true}); }
+      else if (el.matches('ol,ul')){ listaPdf(p, el, 0); p.space(1.5); }
+      else if (el.matches('.tabela-wrap')){
+        const heads = $$('thead th', el).map(th => th.textContent.trim());
+        $$('tbody tr', el).forEach(tr => {
+          const cells = $$('th,td', tr).map(c => c.textContent.trim());
+          p.text(cells[0], {bold:true, gap:0.8, keep:true});
+          for (let i = 1; i < cells.length; i++) p.text(heads[i] + ': ' + cells[i], {indent:4, gap:0.8, norm:true});
+          p.space(1.5);
+        });
+      }
+      else if (el.matches('.exemplos')){
+        $$('.exemplo', el).forEach(ex => {
+          p.text($('h3', ex).textContent + ' (' + ex.dataset.tipo + ')', {bold:true, gap:0.8, keep:true});
+          $$('p', ex).forEach(pp => p.text(pp.textContent, {gap:1.5, norm:true}));
+          p.space(1.5);
+        });
+      }
+    });
+    return p.finish('Guia de Criação de Tributos e Dívidas');
+  }
+  function fichaPdf(v, protocolo){
+    const p = novoPdf(); if (!p) return null;
+    p.text('Ficha de Herdeiro', {size:18, bold:true, gap:1});
+    p.text('D.O.A. · Divisão de Ocorrências Atípicas · Protocolo ' + (protocolo || '-'), {size:9, color:MUTED, gap:5});
+    let g = null;
+    FIELDS.forEach(f => {
+      if (f.g !== g){ g = f.g; p.space(2); p.text(g.toUpperCase(), {size:10, bold:true, color:STAMP, gap:1.5, keep:true}); p.rule(); }
+      p.text(f.label, {size:9.5, bold:true, color:MUTED, gap:0.8, keep:true});
+      p.text((v[f.id] || '').trim() || '-', {size:11, gap:3.5});
+    });
+    return p.finish('Ficha de Herdeiro · ' + (protocolo || ''));
+  }
+  function nomeArquivo(s){ return limparTexto(s).replace(/[\\/:*?"<>|]+/g, '').replace(/\s+/g, ' ').trim().slice(0, 80) || 'herdeiro'; }
+  function baixarBlob(nome, blob){
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = nome;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 10000);
+  }
+  function arquivoDaFicha(v){
+    const base = 'Ficha - ' + nomeArquivo(v.personagem || 'herdeiro');
+    const pdf = fichaPdf(v, state.protocolo);
+    if (pdf) return {nome: base + '.pdf', blob: pdf, tipo: 'application/pdf'};
+    return {nome: base + '.txt', blob: new Blob([fichaTexto(v, state.protocolo, false)], {type:'text/plain;charset=utf-8'}), tipo: 'text/plain'};
+  }
+
+  /* ---------- Ações ---------- */
+  function exigirNome(v){
+    if (v.personagem.trim()) return true;
+    aviso('Preencha pelo menos o nome do personagem.');
+    abrir('ficha'); $('#f-personagem').focus();
+    return false;
+  }
+  $('#btn-whats').addEventListener('click', () => {
+    const v = lerValores(); if (!exigirNome(v)) return;
+    abrirLink('https://wa.me/' + NUMERO + '?text=' + encodeURIComponent(fichaTexto(v, state.protocolo, true)));
+  });
+  $('#btn-ficha-pdf').addEventListener('click', () => {
+    const v = lerValores(); const arq = arquivoDaFicha(v);
+    baixarBlob(arq.nome, arq.blob);
+    aviso(arq.tipo === 'application/pdf' ? 'PDF baixado: ' + arq.nome : 'O gerador de PDF não carregou, então a ficha foi baixada em texto.');
+  });
+  $('#btn-compartilhar').addEventListener('click', async () => {
+    const v = lerValores(); if (!exigirNome(v)) return;
+    const arq = arquivoDaFicha(v);
+    const file = new File([arq.blob], arq.nome, {type: arq.tipo});
+    if (navigator.canShare && navigator.canShare({files:[file]})){
+      try { await navigator.share({files:[file], title:'Ficha de Herdeiro'}); }
+      catch (e) { if (!e || e.name !== 'AbortError') aviso('Não deu para compartilhar. Baixe o PDF e mande pelo WhatsApp.'); }
+    } else {
+      baixarBlob(arq.nome, arq.blob);
+      aviso('Este aparelho não compartilha arquivos por aqui, então o arquivo foi baixado.');
+    }
+  });
+  $('#btn-copiar').addEventListener('click', e => copiar(fichaTexto(lerValores(), state.protocolo, false), e.currentTarget));
+  $('#btn-guia-pdf').addEventListener('click', () => {
+    const pdf = guiaPdf();
+    if (!pdf){ aviso('O gerador de PDF ainda está carregando. Tente de novo em alguns segundos.'); return; }
+    baixarBlob('Guia de Tributos e Dívidas.pdf', pdf);
+    aviso('Guia baixado.');
+  });
+  const btnLimpar = $('#btn-limpar'); let limparT = null;
+  btnLimpar.addEventListener('click', () => {
+    if (btnLimpar.dataset.confirmar){
+      clearTimeout(limparT); delete btnLimpar.dataset.confirmar; btnLimpar.textContent = 'Limpar ficha';
+      preencher({}); state.protocolo = novoProtocolo(); salvarRascunho(); atualizar(); aviso('Ficha limpa.');
+    } else {
+      btnLimpar.dataset.confirmar = '1'; btnLimpar.textContent = 'Toque de novo para limpar';
+      limparT = setTimeout(() => { delete btnLimpar.dataset.confirmar; btnLimpar.textContent = 'Limpar ficha'; }, 4000);
+    }
+  });
+
+  /* ---------- Início ---------- */
+  montarFormulario();
+  const r = lerRascunho();
+  if (r && r.campos) preencher(r.campos);
+  state.protocolo = (r && r.protocolo) || novoProtocolo();
+  atualizar();
+  abrir(location.hash === '#ficha' ? 'ficha' : 'guia');
+
+  $('#entrega').textContent = NUMERO
+    ? 'O botão do WhatsApp abre direto a conversa com o mestre, com a ficha pronta para enviar.'
+    : 'O botão do WhatsApp abre seus contatos com a ficha pronta: escolha o mestre, no privado, não no grupo.';
+
+  try {
+    const teste = new File(['x'], 'teste.pdf', {type:'application/pdf'});
+    if (navigator.canShare && navigator.canShare({files:[teste]})) $('#btn-compartilhar').hidden = false;
+  } catch (e) {}
+
+  const form = $('#ficha-form');
+  form.addEventListener('input', e => { crescer(e.target); atualizar(); agendarRascunho(); });
+  form.addEventListener('change', () => { atualizar(); agendarRascunho(); });
+  form.addEventListener('submit', e => e.preventDefault());
+})();
+</script>
+</body>
+</html>
