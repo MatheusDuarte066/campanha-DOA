@@ -8,130 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..800&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
-<style>
-/* Layout: pasta de repartição — cabeçalho de arquivo, abas Guia / Ficha, coluna de leitura de ~760px, ficha como folha de formulário */
-:root{
-  --bg:#E5EAE5;
-  --paper:#F8FAF7;
-  --field:#FFFFFF;
-  --ink:#1B2230;
-  --muted:#5B6470;
-  --line:#C6CEC8;
-  --stamp:#5B3FA8;
-  --tributo:#1E6E68;
-  --divida:#A02C3C;
-  --display:"Archivo","Arial Narrow",system-ui,sans-serif;
-  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
-  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-  color-scheme:light;
-}
-@media (prefers-color-scheme: dark){
-  :root{
-    --bg:#0F1318; --paper:#161B22; --field:#10151B; --ink:#E3E7ED; --muted:#98A1AD;
-    --line:#2C343F; --stamp:#A993F0; --tributo:#5FC4B9; --divida:#F08291; color-scheme:dark;
-  }
-}
-*{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6}
-[hidden]{display:none!important}
-img{max-width:100%}
-.wrap{max-width:780px;margin:0 auto;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-top:calc(28px + env(safe-area-inset-top, 0px));padding-bottom:calc(72px + env(safe-area-inset-bottom, 0px))}
-
-/* Capa */
-.capa{border-bottom:2px solid var(--ink);padding-bottom:20px}
-.capa-topo{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-.sigla,.nota,.protocolo,.progresso-texto{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
-.sigla{letter-spacing:.08em;text-transform:uppercase}
-.selo{font-family:var(--display);font-stretch:80%;font-weight:800;text-transform:uppercase;letter-spacing:.14em;font-size:13px;color:var(--stamp);border:2px solid var(--stamp);padding:3px 10px;border-radius:3px;transform:rotate(-4deg);display:inline-block}
-h1{font-family:var(--display);font-stretch:72%;font-weight:800;text-transform:uppercase;font-size:clamp(42px, 10vw, 74px);line-height:.92;letter-spacing:.005em;margin:20px 0 14px;text-wrap:balance}
-.lede{font-size:18.5px;max-width:58ch;margin:0 0 10px}
-.nota{margin:0}
-
-/* Abas */
-.abas{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:22px 0 30px;overflow-x:auto}
-.abas button{font-family:var(--display);font-stretch:85%;font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:15px;background:none;border:0;border-bottom:3px solid transparent;color:var(--muted);padding:10px 14px;cursor:pointer;white-space:nowrap;margin-bottom:-1px}
-.abas button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--stamp)}
-.abas button:focus-visible{outline:2px solid var(--stamp);outline-offset:2px}
-
-/* Botões */
-.btn{font-family:var(--display);font-stretch:85%;font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:14px;padding:11px 16px;border:1.5px solid var(--ink);background:transparent;color:var(--ink);border-radius:3px;cursor:pointer}
-.btn:hover{background:color-mix(in srgb, var(--ink) 7%, transparent)}
-.btn.primario{background:var(--stamp);border-color:var(--stamp);color:var(--paper)}
-.btn.primario:hover{background:color-mix(in srgb, var(--stamp) 88%, var(--ink))}
-.btn.discreto{border-color:var(--line);color:var(--muted)}
-.btn:focus-visible{outline:2px solid var(--stamp);outline-offset:2px}
-.acoes-guia{display:flex;justify-content:flex-end;margin:-10px 0 18px}
-
-/* Guia */
-#guia-conteudo{max-width:68ch}
-#guia-conteudo h2{font-family:var(--display);font-stretch:80%;font-weight:750;text-transform:uppercase;letter-spacing:.03em;font-size:25px;line-height:1.1;margin:44px 0 12px;text-wrap:balance}
-#guia-conteudo h2:first-child{margin-top:0}
-#guia-conteudo p{margin:0 0 14px}
-#guia-conteudo ol,#guia-conteudo ul{padding-left:1.5em;margin:0 0 18px;display:grid;gap:8px}
-#guia-conteudo li ul{margin:8px 0 0;gap:4px}
-#guia-conteudo ol > li::marker{font-family:var(--mono);color:var(--stamp);font-size:.85em}
-.tabela-wrap{overflow-x:auto;margin:6px 0 18px;border:1px solid var(--line);border-radius:4px;background:var(--paper)}
-table{border-collapse:collapse;width:100%;min-width:540px;font-size:15.5px;line-height:1.5}
-th,td{text-align:left;vertical-align:top;padding:11px 14px;border-bottom:1px solid var(--line)}
-tbody tr:last-child th,tbody tr:last-child td{border-bottom:0}
-thead th{font-family:var(--mono);font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.1em}
-tbody th{font-family:var(--mono);font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);white-space:nowrap}
-.c-tributo{color:var(--tributo)} .c-divida{color:var(--divida)}
-.exemplos{display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:14px;margin:8px 0 18px}
-.exemplo{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:16px 18px;min-width:0}
-.ex-cab{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:8px}
-.exemplo h3{font-family:var(--display);font-stretch:85%;font-weight:700;font-size:19px;line-height:1.15;margin:0;text-wrap:balance}
-#guia-conteudo .exemplo p{font-size:15.5px;margin:0 0 8px}
-#guia-conteudo .exemplo p.peso{color:var(--muted);margin:0}
-.pill{font-family:var(--mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;padding:2px 9px;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
-.pill.tributo{color:var(--tributo)} .pill.divida{color:var(--divida)}
-.proximo{display:flex;justify-content:flex-start;margin-top:32px;padding-top:24px;border-top:1px solid var(--line)}
-
-/* Ficha */
-.folha{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:24px clamp(16px, 4vw, 34px) 28px}
-.folha-cab{display:flex;justify-content:space-between;gap:16px 24px;flex-wrap:wrap;align-items:flex-end;border-bottom:2px solid var(--ink);padding-bottom:14px}
-.folha-titulo{display:grid;gap:4px}
-.folha-titulo h2{font-family:var(--display);font-stretch:78%;font-weight:800;text-transform:uppercase;font-size:28px;line-height:1;margin:0}
-.progresso{flex:1 1 180px;max-width:260px;min-width:0}
-.progresso-texto{font-variant-numeric:tabular-nums}
-.barra{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin-top:6px}
-.barra i{display:block;height:100%;width:0;background:var(--stamp);transition:width .3s}
-.folha-intro{font-size:15.5px;color:var(--muted);margin:14px 0 0;max-width:62ch}
-fieldset.grupo{border:0;padding:0;margin:26px 0 0;display:grid;gap:18px;min-width:0}
-fieldset.grupo legend{font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--stamp);padding:0;margin-bottom:14px}
-fieldset.secreto{border:1.5px dashed var(--line);border-radius:4px;padding:6px 16px 18px}
-fieldset.secreto legend{padding:0 6px;margin-bottom:6px}
-.grupo-nota{font-size:14.5px;color:var(--muted);margin:0}
-.campo{display:grid;gap:6px;min-width:0}
-.rotulo{font-family:var(--display);font-stretch:90%;font-weight:650;font-size:15.5px;letter-spacing:.01em}
-.dica{font-size:14.5px;color:var(--muted);margin-top:-4px}
-input[type="text"],textarea{width:100%;font-family:var(--body);font-size:16px;line-height:1.5;color:var(--ink);background:var(--field);border:1px solid var(--line);border-radius:3px;padding:10px 12px}
-textarea{resize:vertical;min-height:86px}
-input[type="text"]:focus,textarea:focus{outline:2px solid var(--stamp);outline-offset:-1px;border-color:var(--stamp)}
-::placeholder{color:var(--muted);opacity:.7}
-.opcoes{display:flex;flex-wrap:wrap;gap:8px}
-.opcoes input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
-.opcoes label{font-family:var(--mono);font-size:13px;padding:8px 15px;border:1.5px solid var(--line);border-radius:999px;cursor:pointer;background:var(--field);color:var(--ink)}
-.opcoes label:hover{border-color:var(--muted)}
-.opcoes input:checked + label{border-color:var(--stamp);background:var(--stamp);color:var(--paper)}
-.opcoes input:checked + label[data-valor="Tributo"]{border-color:var(--tributo);background:var(--tributo)}
-.opcoes input:checked + label[data-valor="Dívida"]{border-color:var(--divida);background:var(--divida)}
-.opcoes input:focus-visible + label{outline:2px solid var(--stamp);outline-offset:2px}
-.barra-acoes{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:28px;padding-top:20px;border-top:1px solid var(--line)}
-.barra-acoes .espaco{flex:1 1 auto}
-.entrega{font-size:15px;color:var(--muted);margin:12px 0 0;max-width:62ch}
-textarea.copia{margin-top:12px;font-family:var(--mono);font-size:13px}
-
-/* Aviso flutuante */
-#aviso{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom, 0px));width:max-content;max-width:min(560px, calc(100% - 32px));background:var(--ink);color:var(--bg);font-size:15px;line-height:1.4;padding:12px 16px;border-radius:4px;box-shadow:0 8px 28px rgba(0,0,0,.2);z-index:20}
-
-@media (max-width:520px){
-  body{font-size:16.5px}
-  .barra-acoes .espaco{display:none}
-  .barra-acoes .btn{flex:1 1 auto}
-}
-</style>
+<link rel="stylesheet" href="assets/estilo.css">
 </head>
 <body>
 <div class="wrap">
@@ -141,7 +18,7 @@ textarea.copia{margin-top:12px;font-family:var(--mono);font-size:13px}
       <span class="selo" aria-hidden="true">Confidencial</span>
     </div>
     <h1>Registro de Herdeiros</h1>
-    <p class="lede">Leia o guia, crie o Tributo ou a Dívida do seu personagem e preencha a ficha. No final, mande para o mestre pelo WhatsApp ou baixe em PDF.</p>
+    <p class="lede">Leia o guia, crie o Tributo ou a Dívida do seu personagem e preencha a ficha. No final, envie para o mestre pelo site, pelo WhatsApp ou em PDF.</p>
     <p class="nota">Material de jogo · campanha de RPG</p>
   </header>
 
@@ -268,7 +145,7 @@ textarea.copia{margin-top:12px;font-family:var(--mono);font-size:13px}
         <div class="folha-cab">
           <div class="folha-titulo">
             <span class="protocolo">Formulário de registro · Protocolo <span id="protocolo">RH-0000-0000</span></span>
-            <h2>Ficha de Herdeiro</h2>
+            <h2>Ficha de Herdeiro <span class="selo" id="carimbo" hidden>Recebido</span></h2>
           </div>
           <div class="progresso" aria-live="polite">
             <span class="progresso-texto" id="progresso-texto">0 de 16 respondidas</span>
@@ -280,7 +157,8 @@ textarea.copia{margin-top:12px;font-family:var(--mono);font-size:13px}
         <form id="ficha-form" novalidate autocomplete="off"></form>
 
         <div class="barra-acoes">
-          <button type="button" class="btn primario" id="btn-whats">Enviar no WhatsApp</button>
+          <button type="button" class="btn primario" id="btn-enviar" hidden>Enviar ao mestre</button>
+          <button type="button" class="btn" id="btn-whats">Enviar no WhatsApp</button>
           <button type="button" class="btn" id="btn-compartilhar" hidden>Compartilhar PDF</button>
           <button type="button" class="btn" id="btn-ficha-pdf">Baixar PDF</button>
           <button type="button" class="btn" id="btn-copiar">Copiar texto</button>
@@ -288,6 +166,7 @@ textarea.copia{margin-top:12px;font-family:var(--mono);font-size:13px}
           <button type="button" class="btn discreto" id="btn-limpar">Limpar ficha</button>
         </div>
         <p class="entrega" id="entrega"></p>
+        <p class="enviada" id="enviada" hidden></p>
       </div>
     </section>
   </main>
@@ -296,43 +175,19 @@ textarea.copia{margin-top:12px;font-family:var(--mono);font-size:13px}
 <div id="aviso" role="status" aria-live="polite" hidden></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" async></script>
+<script src="assets/ficha.js"></script>
 <script>
-/* =====================================================================
-   CONFIGURAÇÃO DO MESTRE
-   Coloque aqui o seu WhatsApp, só números: 55 + DDD + número.
-   Exemplo: '5541999998888'
-   Se ficar vazio, o botão abre a lista de contatos e o jogador escolhe.
-   ===================================================================== */
-const WHATSAPP_DO_MESTRE = '';
-
 (function(){
   'use strict';
   const $ = (s, r) => (r || document).querySelector(s);
   const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
-
-  const FIELDS = [
-    {id:'jogador', g:'Identificação', label:'Seu nome (jogador)', type:'text', ph:'Como o mestre te chama'},
-    {id:'personagem', g:'Identificação', label:'Nome do personagem', type:'text', ph:'Ex.: Rafael Nogueira, o "Rafa"'},
-    {id:'tipo', g:'Identificação', label:'Tipo', type:'choice', options:['Tributo','Dívida']},
-    {id:'poder', g:'Identificação', label:'Nome do poder', type:'text', ph:'Ex.: O Pagode Inacabado'},
-    {id:'morto', g:'Quem morreu', label:'Quem morreu', ph:'Nome, idade e quem essa pessoa era. Ex.: Seu Valdir, 58 anos, pagodeiro de bairro, tio do personagem.'},
-    {id:'laco', g:'Quem morreu', label:'Laço com o personagem', ph:'Por que ela importava para você, e você para ela. Nem sempre é amor.'},
-    {id:'morte', g:'Quem morreu', label:'Como foi a morte', ph:'Onde você estava? Estava junto, chegou tarde, só soube dias depois?'},
-    {id:'desejo', g:'Quem morreu', label:'O último desejo', hint:'Uma frase, na voz de quem morreu.', ph:'Ex.: "Eu só queria terminar essa música pra ela."'},
-    {id:'manifesta', g:'O poder', label:'Como se manifesta', ph:'Uma arma, um objeto, um som, um cheiro, uma presença, uma mudança no corpo.'},
-    {id:'efeito', g:'O poder', label:'O que faz', ph:'Duas ou três frases sobre o efeito principal.'},
-    {id:'limites', g:'O poder', label:'Limites e falhas', ph:'Alcance, duração, gatilho, o que anula, quando falha.'},
-    {id:'peso', g:'O poder', label:'O peso', hint:'A compulsão do Tributo ou o custo da Dívida.', ph:'Ex.: ele não consegue parar no meio de uma música.'},
-    {id:'ignorar', g:'O poder', label:'O que acontece se ignorar', ph:'Ex.: a música toca na cabeça dele sem parar até ele cantar.'},
-    {id:'recrutamento', g:'D.O.A.', label:'Como a D.O.A. te encontrou', type:'choice', options:['Incidente','Indicação','Busca','Testemunha','Outro']},
-    {id:'recrutamento_det', g:'D.O.A.', label:'Conte como foi', ph:'O que aconteceu, quem apareceu, como você entrou.'},
-    {id:'esconde', g:'D.O.A.', label:'O que você esconde da D.O.A.', ph:'O que você não contou sobre o seu poder, ou sobre quem morreu.'},
-    {id:'segredo', g:'Só para o mestre', label:'Algo que nem seu personagem sabe', hint:'Opcional. Uma ponta solta sobre o poder ou sobre quem morreu.', ph:'O mestre vai usar isso para te surpreender.', optional:true}
-  ];
-  const GRUPO_NOTA = {'Só para o mestre':'Só o mestre deve ler esta parte. Mande a ficha no privado dele, não no grupo.'};
+  const D = window.DOA, CFG = window.DOA_CONFIG;
+  const FIELDS = D.FIELDS;
+  const GRUPO_NOTA = {'Só para o mestre':'Só o mestre lê esta parte. Se for mandar pelo WhatsApp, mande no privado dele, não no grupo.'};
   const RASCUNHO = 'doa-registro-independente-v1';
-  const NUMERO = String(WHATSAPP_DO_MESTRE || '').replace(/\D/g, '');
-  const state = {protocolo:null};
+  const NUMERO = String(CFG.WHATSAPP_DO_MESTRE || '').replace(/\D/g, '');
+  const TEM_ENVIO = !!String(CFG.URL_DO_SCRIPT || '').trim();
+  const state = {protocolo:null, chave:null, enviadaEm:null};
 
   /* ---------- Formulário ---------- */
   function montarFormulario(){
@@ -392,6 +247,11 @@ const WHATSAPP_DO_MESTRE = '';
     el.style.height = 'auto'; el.style.height = (el.scrollHeight + 2) + 'px';
   }
   function novoProtocolo(){ return 'RH-' + new Date().getFullYear() + '-' + String(Math.floor(1000 + Math.random() * 9000)); }
+  function novaChave(){
+    const a = new Uint8Array(16);
+    try { crypto.getRandomValues(a); } catch (e) { for (let i = 0; i < a.length; i++) a[i] = Math.floor(Math.random() * 256); }
+    return Array.from(a, b => b.toString(16).padStart(2, '0')).join('');
+  }
   function atualizar(){
     const v = lerValores();
     const req = FIELDS.filter(f => !f.optional);
@@ -401,7 +261,7 @@ const WHATSAPP_DO_MESTRE = '';
     $('#protocolo').textContent = state.protocolo;
   }
   function salvarRascunho(){
-    try { localStorage.setItem(RASCUNHO, JSON.stringify({campos: lerValores(), protocolo: state.protocolo})); } catch (e) {}
+    try { localStorage.setItem(RASCUNHO, JSON.stringify({campos: lerValores(), protocolo: state.protocolo, chave: state.chave, enviadaEm: state.enviadaEm})); } catch (e) {}
   }
   function lerRascunho(){
     try { const s = localStorage.getItem(RASCUNHO); return s ? JSON.parse(s) : null; } catch (e) { return null; }
@@ -430,71 +290,7 @@ const WHATSAPP_DO_MESTRE = '';
   });
   $('#btn-ir-ficha').addEventListener('click', () => { abrir('ficha', true); });
 
-  /* ---------- Avisos, texto e cópia ---------- */
-  let avisoT = null;
-  function aviso(msg){ const a = $('#aviso'); a.textContent = msg; a.hidden = false; clearTimeout(avisoT); avisoT = setTimeout(() => { a.hidden = true; }, 5000); }
-  function fichaTexto(v, protocolo, zap){
-    const b = s => zap ? '*' + s + '*' : s;
-    const L = [b('FICHA DE HERDEIRO · D.O.A.'), 'Protocolo ' + (protocolo || '-')];
-    let g = null;
-    FIELDS.forEach(f => {
-      if (f.g !== g){ g = f.g; L.push('', b(g.toUpperCase())); }
-      const val = (v[f.id] || '').trim() || '-';
-      L.push(zap ? b(f.label + ':') + ' ' + val : f.label.toUpperCase() + ': ' + val);
-    });
-    return L.join('\n');
-  }
-  function copiar(texto, ancora){
-    const reserva = () => {
-      let ta = ancora._copia;
-      if (!ta){ ta = document.createElement('textarea'); ta.className = 'copia'; ta.readOnly = true; ta.rows = 8; ta.setAttribute('aria-label','Texto da ficha'); ancora.parentElement.after(ta); ancora._copia = ta; }
-      ta.value = texto; ta.hidden = false; ta.focus(); ta.select();
-      let ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
-      aviso(ok ? 'Ficha copiada. Cole na conversa com o mestre.' : 'Texto selecionado. Copie e mande para o mestre.');
-    };
-    try {
-      if (navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext){
-        navigator.clipboard.writeText(texto).then(() => { if (ancora._copia) ancora._copia.hidden = true; aviso('Ficha copiada. Cole na conversa com o mestre.'); }, reserva);
-      } else reserva();
-    } catch (e) { reserva(); }
-  }
-  function abrirLink(url){
-    const a = document.createElement('a'); a.href = url; a.target = '_blank'; a.rel = 'noopener';
-    document.body.appendChild(a); a.click(); a.remove();
-  }
-
-  /* ---------- PDF ---------- */
-  const INK = [27,34,48], MUTED = [91,100,112], STAMP = [91,63,168];
-  function limparTexto(s){
-    return String(s == null ? '' : s)
-      .replace(/[“”„]/g, '"').replace(/[‘’]/g, "'")
-      .replace(/[–—]/g, '-').replace(/…/g, '...').replace(/•/g, '-')
-      .replace(/[^\x09\x0A\x0D\x20-\x7E\xA0-\xFF]/g, '');
-  }
-  function novoPdf(){
-    const J = window.jspdf && window.jspdf.jsPDF; if (!J) return null;
-    const doc = new J({unit:'mm', format:'a4'});
-    const W = 210, H = 297, M = 18, MW = W - 2 * M; let y = M;
-    return {
-      text(str, o){
-        o = o || {};
-        const size = o.size || 10.5;
-        doc.setFont('helvetica', o.bold ? 'bold' : 'normal'); doc.setFontSize(size); doc.setTextColor.apply(doc, o.color || INK);
-        let s = limparTexto(str); if (o.norm) s = s.replace(/\s+/g, ' ').trim();
-        const ind = o.indent || 0; const lines = doc.splitTextToSize(s, MW - ind); const lh = size * 0.3528 * 1.4;
-        if (o.keep && y + lh * 3 > H - M){ doc.addPage(); y = M; }
-        lines.forEach(l => { if (y + lh > H - M){ doc.addPage(); y = M; } doc.text(l, M + ind, y + lh * 0.75); y += lh; });
-        y += (o.gap == null ? 1.5 : o.gap);
-      },
-      space(n){ y += n; },
-      rule(){ if (y + 4 > H - M){ doc.addPage(); y = M; } doc.setDrawColor(200,206,202); doc.setLineWidth(0.3); doc.line(M, y, W - M, y); y += 3; },
-      finish(titulo){
-        const n = doc.getNumberOfPages();
-        for (let i = 1; i <= n; i++){ doc.setPage(i); doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor.apply(doc, MUTED); doc.text(limparTexto(titulo + ' · pág. ' + i + ' de ' + n), M, H - 9); }
-        return doc.output('blob');
-      }
-    };
-  }
+  /* ---------- PDF do guia ---------- */
   function listaPdf(p, el, nivel){
     const ord = el.matches('ol');
     Array.from(el.children).forEach((li, i) => {
@@ -504,9 +300,9 @@ const WHATSAPP_DO_MESTRE = '';
     });
   }
   function guiaPdf(){
-    const p = novoPdf(); if (!p) return null;
+    const p = D.novoPdf(); if (!p) return null;
     p.text('Guia de Criação de Tributos e Dívidas', {size:18, bold:true, gap:1});
-    p.text('D.O.A. · Divisão de Ocorrências Atípicas · material de jogo', {size:9, color:MUTED, gap:6});
+    p.text('D.O.A. · Divisão de Ocorrências Atípicas · material de jogo', {size:9, color:D.CORES.MUTED, gap:6});
     $$('#guia-conteudo > *').forEach(el => {
       if (el.matches('h2')){ p.space(3); p.text(el.textContent, {size:14, bold:true, gap:2, keep:true, norm:true}); }
       else if (el.matches('p')){ p.text(el.textContent, {gap:2.5, norm:true}); }
@@ -530,72 +326,78 @@ const WHATSAPP_DO_MESTRE = '';
     });
     return p.finish('Guia de Criação de Tributos e Dívidas');
   }
-  function fichaPdf(v, protocolo){
-    const p = novoPdf(); if (!p) return null;
-    p.text('Ficha de Herdeiro', {size:18, bold:true, gap:1});
-    p.text('D.O.A. · Divisão de Ocorrências Atípicas · Protocolo ' + (protocolo || '-'), {size:9, color:MUTED, gap:5});
-    let g = null;
-    FIELDS.forEach(f => {
-      if (f.g !== g){ g = f.g; p.space(2); p.text(g.toUpperCase(), {size:10, bold:true, color:STAMP, gap:1.5, keep:true}); p.rule(); }
-      p.text(f.label, {size:9.5, bold:true, color:MUTED, gap:0.8, keep:true});
-      p.text((v[f.id] || '').trim() || '-', {size:11, gap:3.5});
-    });
-    return p.finish('Ficha de Herdeiro · ' + (protocolo || ''));
-  }
-  function nomeArquivo(s){ return limparTexto(s).replace(/[\\/:*?"<>|]+/g, '').replace(/\s+/g, ' ').trim().slice(0, 80) || 'herdeiro'; }
-  function baixarBlob(nome, blob){
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a'); a.href = url; a.download = nome;
-    document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 10000);
-  }
-  function arquivoDaFicha(v){
-    const base = 'Ficha - ' + nomeArquivo(v.personagem || 'herdeiro');
-    const pdf = fichaPdf(v, state.protocolo);
-    if (pdf) return {nome: base + '.pdf', blob: pdf, tipo: 'application/pdf'};
-    return {nome: base + '.txt', blob: new Blob([fichaTexto(v, state.protocolo, false)], {type:'text/plain;charset=utf-8'}), tipo: 'text/plain'};
-  }
 
-  /* ---------- Ações ---------- */
+  /* ---------- Envio ---------- */
   function exigirNome(v){
     if (v.personagem.trim()) return true;
-    aviso('Preencha pelo menos o nome do personagem.');
+    D.aviso('Preencha pelo menos o nome do personagem.');
     abrir('ficha'); $('#f-personagem').focus();
     return false;
   }
+  function mostrarEnviada(iso, bater){
+    state.enviadaEm = iso;
+    const e = $('#enviada'); e.textContent = 'Enviada ao mestre em ' + D.dataCurta(iso) + '. Se mudar algo, toque em "Atualizar ficha enviada".'; e.hidden = false;
+    $('#btn-enviar').textContent = 'Atualizar ficha enviada';
+    const c = $('#carimbo'); c.hidden = false;
+    if (bater){ c.classList.remove('bate'); void c.offsetWidth; c.classList.add('bate'); }
+  }
+  $('#btn-enviar').addEventListener('click', async () => {
+    const btn = $('#btn-enviar');
+    const v = lerValores(); if (!exigirNome(v)) return;
+    btn.disabled = true; btn.textContent = 'Enviando…';
+    try {
+      const r = await D.chamarScript({acao:'enviar', ficha:{campos: v, protocolo: state.protocolo, chave: state.chave}});
+      mostrarEnviada(r.em || new Date().toISOString(), true);
+      salvarRascunho();
+      D.aviso(r.atualizada ? 'Ficha atualizada. O mestre já recebeu a nova versão.' : 'Ficha enviada ao mestre.');
+    } catch (e) {
+      const c = e && e.codigo;
+      if (c === 'incompleta') D.aviso('Preencha pelo menos o nome do personagem.');
+      else if (c === 'rede') D.aviso('Não deu para enviar agora. Confira a internet ou use o botão do WhatsApp.');
+      else D.aviso('O envio falhou. Tente de novo ou use o botão do WhatsApp.');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = state.enviadaEm ? 'Atualizar ficha enviada' : 'Enviar ao mestre';
+    }
+  });
   $('#btn-whats').addEventListener('click', () => {
     const v = lerValores(); if (!exigirNome(v)) return;
-    abrirLink('https://wa.me/' + NUMERO + '?text=' + encodeURIComponent(fichaTexto(v, state.protocolo, true)));
+    const a = document.createElement('a');
+    a.href = 'https://wa.me/' + NUMERO + '?text=' + encodeURIComponent(D.fichaTexto(v, state.protocolo, true));
+    a.target = '_blank'; a.rel = 'noopener';
+    document.body.appendChild(a); a.click(); a.remove();
   });
   $('#btn-ficha-pdf').addEventListener('click', () => {
-    const v = lerValores(); const arq = arquivoDaFicha(v);
-    baixarBlob(arq.nome, arq.blob);
-    aviso(arq.tipo === 'application/pdf' ? 'PDF baixado: ' + arq.nome : 'O gerador de PDF não carregou, então a ficha foi baixada em texto.');
+    const arq = D.arquivoDaFicha(lerValores(), state.protocolo);
+    D.baixarBlob(arq.nome, arq.blob);
+    D.aviso(arq.tipo === 'application/pdf' ? 'PDF baixado: ' + arq.nome : 'O gerador de PDF não carregou, então a ficha foi baixada em texto.');
   });
   $('#btn-compartilhar').addEventListener('click', async () => {
     const v = lerValores(); if (!exigirNome(v)) return;
-    const arq = arquivoDaFicha(v);
+    const arq = D.arquivoDaFicha(v, state.protocolo);
     const file = new File([arq.blob], arq.nome, {type: arq.tipo});
     if (navigator.canShare && navigator.canShare({files:[file]})){
       try { await navigator.share({files:[file], title:'Ficha de Herdeiro'}); }
-      catch (e) { if (!e || e.name !== 'AbortError') aviso('Não deu para compartilhar. Baixe o PDF e mande pelo WhatsApp.'); }
+      catch (e) { if (!e || e.name !== 'AbortError') D.aviso('Não deu para compartilhar. Baixe o PDF e mande pelo WhatsApp.'); }
     } else {
-      baixarBlob(arq.nome, arq.blob);
-      aviso('Este aparelho não compartilha arquivos por aqui, então o arquivo foi baixado.');
+      D.baixarBlob(arq.nome, arq.blob);
+      D.aviso('Este aparelho não compartilha arquivos por aqui, então o arquivo foi baixado.');
     }
   });
-  $('#btn-copiar').addEventListener('click', e => copiar(fichaTexto(lerValores(), state.protocolo, false), e.currentTarget));
+  $('#btn-copiar').addEventListener('click', e => D.copiar(D.fichaTexto(lerValores(), state.protocolo, false), e.currentTarget));
   $('#btn-guia-pdf').addEventListener('click', () => {
     const pdf = guiaPdf();
-    if (!pdf){ aviso('O gerador de PDF ainda está carregando. Tente de novo em alguns segundos.'); return; }
-    baixarBlob('Guia de Tributos e Dívidas.pdf', pdf);
-    aviso('Guia baixado.');
+    if (!pdf){ D.aviso('O gerador de PDF ainda está carregando. Tente de novo em alguns segundos.'); return; }
+    D.baixarBlob('Guia de Tributos e Dívidas.pdf', pdf);
+    D.aviso('Guia baixado.');
   });
   const btnLimpar = $('#btn-limpar'); let limparT = null;
   btnLimpar.addEventListener('click', () => {
     if (btnLimpar.dataset.confirmar){
       clearTimeout(limparT); delete btnLimpar.dataset.confirmar; btnLimpar.textContent = 'Limpar ficha';
-      preencher({}); state.protocolo = novoProtocolo(); salvarRascunho(); atualizar(); aviso('Ficha limpa.');
+      preencher({}); state.protocolo = novoProtocolo(); state.chave = novaChave(); state.enviadaEm = null;
+      $('#enviada').hidden = true; $('#carimbo').hidden = true; $('#btn-enviar').textContent = 'Enviar ao mestre';
+      salvarRascunho(); atualizar(); D.aviso('Ficha limpa.');
     } else {
       btnLimpar.dataset.confirmar = '1'; btnLimpar.textContent = 'Toque de novo para limpar';
       limparT = setTimeout(() => { delete btnLimpar.dataset.confirmar; btnLimpar.textContent = 'Limpar ficha'; }, 4000);
@@ -607,12 +409,21 @@ const WHATSAPP_DO_MESTRE = '';
   const r = lerRascunho();
   if (r && r.campos) preencher(r.campos);
   state.protocolo = (r && r.protocolo) || novoProtocolo();
+  state.chave = (r && typeof r.chave === 'string' && r.chave.length >= 16) ? r.chave : novaChave();
   atualizar();
+  if (r && r.enviadaEm && TEM_ENVIO) mostrarEnviada(r.enviadaEm, false);
+  salvarRascunho();
   abrir(location.hash === '#ficha' ? 'ficha' : 'guia');
 
-  $('#entrega').textContent = NUMERO
-    ? 'O botão do WhatsApp abre direto a conversa com o mestre, com a ficha pronta para enviar.'
-    : 'O botão do WhatsApp abre seus contatos com a ficha pronta: escolha o mestre, no privado, não no grupo.';
+  if (TEM_ENVIO){
+    $('#btn-enviar').hidden = false;
+    $('#entrega').textContent = 'Toque em "Enviar ao mestre" e a ficha chega direto para ele. Os outros botões são reserva.';
+  } else {
+    $('#btn-whats').classList.add('primario');
+    $('#entrega').textContent = NUMERO
+      ? 'O botão do WhatsApp abre direto a conversa com o mestre, com a ficha pronta para enviar.'
+      : 'O botão do WhatsApp abre seus contatos com a ficha pronta: escolha o mestre, no privado, não no grupo.';
+  }
 
   try {
     const teste = new File(['x'], 'teste.pdf', {type:'application/pdf'});
