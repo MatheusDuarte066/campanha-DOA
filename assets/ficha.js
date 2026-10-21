@@ -5,7 +5,7 @@
    Vazio = o botão abre a lista de contatos e o jogador escolhe.
    ===================================================================== */
 window.DOA_CONFIG = {
-  URL_DO_SCRIPT: '',
+  URL_DO_SCRIPT: 'https://script.google.com/macros/s/AKfycbydDwEtZbvMSAKZDXwOisv_j06UFmn9N8Uy6ytSpm1qN4bYbC4mpougKpOzrty2yH7-/exec',
   WHATSAPP_DO_MESTRE: ''
 };
 
